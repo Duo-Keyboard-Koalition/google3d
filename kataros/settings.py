@@ -46,19 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< Updated upstream
     'home',
     'charts',
     'about_us',
     'socials',
     'map_page'
-=======
-    'apps.home',
-    'apps.charts',
-    'apps.about_us',
-    'apps.socials',
-    'apps.map_page'
->>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
