@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # join paths with os
@@ -23,7 +27,10 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6=ge3yi&0o($-pdwrxpr6vinab#wi2g55p03xl-0@vymk*ko4&'
 # Add this to your settings.py
-GOOGLE_MAPS_API_KEY = 'AIzaSyDDGQQEA0grrP2FPL_iNZhEX0hlxTOMuwM'
+
+
+# Get the Google Maps API key from the environment variable
+GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,11 +46,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< Updated upstream
     'home',
     'charts',
     'about_us',
     'socials',
     'map_page'
+=======
+    'apps.home',
+    'apps.charts',
+    'apps.about_us',
+    'apps.socials',
+    'apps.map_page'
+>>>>>>> Stashed changes
 ]
 
 MIDDLEWARE = [
