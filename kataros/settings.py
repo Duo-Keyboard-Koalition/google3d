@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'about_us',
-    'help_pages',
+    'cufflinks',
     'welcome',
     'map_page'
 ]
