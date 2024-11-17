@@ -11,6 +11,22 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/map.css' %}">
     {% block extra_head %}{% endblock %}
+    <style>
+        .no-transition {
+            transition: none !important;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sidebar = document.getElementById("sidebar");
+            var sidebarToggle = document.getElementById("sidebarToggle").querySelector("i");
+            if (localStorage.getItem("sidebarState") === "collapsed") {
+                sidebar.classList.add("collapsed", "no-transition");
+                sidebarToggle.classList.remove("bi-chevron-left");
+                sidebarToggle.classList.add("bi-chevron-right");
+            }
+        });
+    </script>
 </head>
 <body>
     <nav id="sidebar">
