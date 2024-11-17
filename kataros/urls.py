@@ -19,8 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('welcome.urls')),
-    path('home/', include('home.urls')),
-    path('charts/', include('home_plotly.urls')),
+    path('welcome/', include('welcome.urls')),
+    path('', include('home.urls')),
+    path('charts/', include('charts.urls')),
     path('maps/', include('map_page.urls')),
 ]

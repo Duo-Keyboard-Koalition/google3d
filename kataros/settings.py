@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    'home_plotly',
+    'charts',
     'about_us',
     'welcome',
     'map_page'
