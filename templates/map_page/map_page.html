@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Full Screen Google 3D Map{% endblock %}
+
+{% block extra_head %}
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #map-container {
+        width: 100%;
+        height: 100vh;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="map-container">
+    <gmp-map-3d center="37.841157, -122.551679" range="2000" tilt="75" heading="330" aria-label="3D map of San Francisco area"></gmp-map-3d>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function initMap() {
+        console.log('Google Maps API loaded');
+    }
+
+    function adjustMapHeight() {
+        const mapContainer = document.getElementById('map-container');
+        if (mapContainer) {
+            mapContainer.style.height = `${window.innerHeight}px`;
+        }
+    }
+
+    window.addEventListener('load', adjustMapHeight);
+    window.addEventListener('resize', adjustMapHeight);
+</script>
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&v=alpha&libraries=maps3d&callback=initMap"></script>
+{% endblock %}

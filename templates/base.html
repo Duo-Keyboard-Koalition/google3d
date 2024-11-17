@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Kataros{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+        #sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+        #content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .nav-link {
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+        }
+        .nav-link:hover {
+            background-color: #e9ecef;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed;
+                left: -250px;
+                top: 0;
+                bottom: 0;
+                z-index: 1000;
+                transition: left 0.3s ease-in-out;
+            }
+            #sidebar.active {
+                left: 0;
+            }
+            #content {
+                margin-left: 0;
+            }
+            #sidebarCollapse {
+                display: block !important;
+            }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <nav id="sidebar">
+        <div class="navbar-brand">Kataros</div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'welcome' %}"><i class="bi bi-house-door"></i> Welcome</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-info-circle"></i> Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'map' %}"><i class="bi bi-map"></i> 3D Map</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light d-md-none">
+            <div class="container-fluid">
+                <button id="sidebarCollapse" class="btn btn-outline-primary" type="button">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span class="navbar-brand">Kataros</span>
+            </div>
+        </nav>
+
+        <main class="container-fluid py-4">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="bg-light text-center py-3">
+            <div class="container">
+                <p class="mb-0">&copy; 2024 Kataros. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sidebar = document.getElementById('sidebar');
+            var sidebarCollapse = document.getElementById('sidebarCollapse');
+            var content = document.getElementById('content');
+
+            sidebarCollapse.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            content.addEventListener('click', function() {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
