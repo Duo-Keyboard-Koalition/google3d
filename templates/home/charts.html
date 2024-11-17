@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+{% block menu %}
+<ul class="nav flex-column">
+    <!-- Other menu items... -->
+
+    <li class="nav-item mb-2">
+        <a class="nav-link d-flex align-items-center py-2 px-3 rounded-3 text-decoration-none" href="{% url 'home_plotly' %}">
+            <i class="bi bi-bar-chart-line me-2 fs-5"></i>
+            <span>Charts</span>
+        </a>
+    </li>
+
+    <!-- Other menu items... -->
+</ul>
+{% endblock %}
+{% block content %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home/charts.js' %}"></script>
+{% endblock %}

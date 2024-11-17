@@ -14,9 +14,9 @@
         </div>
     </li>
     <li class="nav-item mb-3">
-        <button id="homeButton" class="btn btn-primary w-100 d-flex align-items-center" type="button">
-            <i class="bi bi-house-door me-2"></i>
-            <span>Home</span>
+        <button id="myLocationButton" class="btn btn-primary w-100 d-flex align-items-center" type="button">
+            <i class="bi bi-geo-alt me-2"></i> <!-- Changed icon to represent location -->
+            <span>My Location</span> <!-- Updated text to indicate functionality -->
         </button>
     </li>
     <li class="nav-item">
@@ -37,11 +37,12 @@
 
 {% block content %}
 
-<div id="map-container">
-    <gmp-map-3d center="{{ center }}" range="{{ range }}" tilt="{{ tilt }}" heading="{{ heading }}"
-        aria-label="{{ aria_label }}">
-    </gmp-map-3d>
-</div>
+    <gmp-map-3d 
+        center="{{ center }}" 
+        range="{{ range }}" 
+        tilt="{{ tilt }}" 
+        heading="{{ heading }}"
+        aria-label="{{ aria_label }}"></gmp-map-3d>
 {% endblock %}
 
 {% block extra_js %}
@@ -51,25 +52,24 @@
     src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&v=alpha&libraries=maps3d&callback=initMap"></script>
 <script>
     $(document).ready(function () {
-        initMap(); // Initialize the map
-
         {% if my_location %}
         // If my_location is true, call myLocation function
         myLocation();
         {% endif %}
+        initMap(); // Initialize the map
     });
 </script>
 <script>
-    $(document).ready(function () {
-        $('#homeButton').on('click', function () {
+    $(document).ready(function() {
+        $('#myLocationButton').on('click', function() {
             if (typeof myLocation === 'function') {
                 myLocation();
             } else {
                 console.error('myLocation function is not defined');
             }
         });
-
-        $('#locationForm').on('submit', function (e) {
+    
+        $('#locationForm').on('submit', function(e) {
             e.preventDefault();
             var location = $('#locationInput').val().trim();
             if (location) {
@@ -82,5 +82,5 @@
             }
         });
     });
-</script>
+    </script>
 {% endblock %}

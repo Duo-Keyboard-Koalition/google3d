@@ -1,0 +1,8 @@
+#map-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.gmp-map-3d{
+    height: 100%; /* Set height to 100% of the viewport height */
+}
