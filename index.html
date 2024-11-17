@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Places Autocomplete Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDGQQEA0grrP2FPL_iNZhEX0hlxTOMuwM&libraries=places&callback=initAutocomplete" async defer></script>
+</head>
+<body>
+
+<h1>Location Search Autocomplete</h1>
+<input id="autocomplete" placeholder="Enter a location" type="text" />
+
+<script>
+function initAutocomplete() {
+    // Create the autocomplete object
+    const autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('autocomplete'), 
+        { types: ['geocode'] } // Restrict results to geographical locations
+    );
+
+    // Add listener for when a place is selected
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+            console.log("No details available for input: '" + place.name + "'");
+            return;
+        }
+
+        // Log selected place details
+        console.log('Selected Place:', place);
+        console.log('Latitude:', place.geometry.location.lat());
+        console.log('Longitude:', place.geometry.location.lng());
+    });
+}
+</script>
+
+</body>
+</html>

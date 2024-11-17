@@ -1,29 +1,86 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Full Screen Google 3D Map{% endblock %}
+{% block title %}Kataros | 3D Map{% endblock %}
+
+{% block menu %}
+<ul class="nav flex-column">
+    <li class="nav-item mb-3">
+        <div class="card bg-light">
+            <div class="card-body py-2">
+                <h6 class="card-title mb-1">3D Maps</h6>
+                <p class="card-text small mb-0">Explore interactive 3D maps with real-time updates and custom views.</p>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item mb-3">
+        <button id="homeButton" class="btn btn-primary w-100 d-flex align-items-center" type="button">
+            <i class="bi bi-house-door me-2"></i>
+            <span>Home</span>
+        </button>
+    </li>
+    <li class="nav-item">
+        <form id="locationForm" class="mt-3">
+            <div class="mb-3">
+                <label for="locationInput" class="form-label">Enter a location:</label>
+                <input type="text" class="form-control" id="locationInput" placeholder="e.g., New York, NY" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">
+                <i class="bi bi-search me-2"></i>Go to Location
+            </button>
+        </form>
+    </li>
+</ul>
+{% endblock %}
+
 
 
 {% block content %}
+
 <div id="map-container">
-    <gmp-map-3d center="37.841157, -122.551679" range="2000" tilt="75" heading="330" aria-label="3D map of San Francisco area"></gmp-map-3d>
+    <gmp-map-3d center="{{ center }}" range="{{ range }}" tilt="{{ tilt }}" heading="{{ heading }}"
+        aria-label="{{ aria_label }}">
+    </gmp-map-3d>
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/map_page/map.js' %}"></script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&v=alpha&libraries=maps3d&callback=initMap"></script>
 <script>
-    function initMap() {
-        console.log('Google Maps API loaded');
-    }
+    $(document).ready(function () {
+        initMap(); // Initialize the map
 
-    function adjustMapHeight() {
-        const mapContainer = document.getElementById('map-container');
-        if (mapContainer) {
-            mapContainer.style.height = `${window.innerHeight}px`;
-        }
-    }
-
-    window.addEventListener('load', adjustMapHeight);
-    window.addEventListener('resize', adjustMapHeight);
+        {% if my_location %}
+        // If my_location is true, call myLocation function
+        myLocation();
+        {% endif %}
+    });
 </script>
-<script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&v=alpha&libraries=maps3d&callback=initMap"></script>
+<script>
+    $(document).ready(function () {
+        $('#homeButton').on('click', function () {
+            if (typeof myLocation === 'function') {
+                myLocation();
+            } else {
+                console.error('myLocation function is not defined');
+            }
+        });
+
+        $('#locationForm').on('submit', function (e) {
+            e.preventDefault();
+            var location = $('#locationInput').val().trim();
+            if (location) {
+                console.log('Location:', location);
+                if (typeof updateMapLocation === 'function') {
+                    updateMapLocation(location);
+                } else {
+                    console.error('updateMapLocation function is not defined');
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
