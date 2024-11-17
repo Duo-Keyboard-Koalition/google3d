@@ -19,15 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< Updated upstream
     path('', include('home.urls')),
     path('socials/', include('socials.urls')),
     path('charts/', include('charts.urls')),
     path('maps/', include('map_page.urls')),
-=======
-    path('socials/', include('apps.socials.urls')),
-    path('', include('apps.home.urls')),
-    path('charts/', include('apps.charts.urls')),
-    path('maps/', include('apps.map_page.urls')),
->>>>>>> Stashed changes
 ]
