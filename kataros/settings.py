@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'home',
     'charts',
     'about_us',
-    'welcome',
+    'socials',
     'map_page'
 ]
 
