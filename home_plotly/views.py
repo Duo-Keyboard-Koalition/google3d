@@ -1,6 +1,18 @@
 from django.shortcuts import render
+import plotly.express as px
+import pandas as pd
 
-# Create your views here.
-def home_plotly(request):
-    my_dict = {'insert_me':"Hello I am from views.py!"}
-    return render(request,'home/charts.html',context=my_dict)
+def chart_view(request):
+    # Example data for the chart
+    df = pd.DataFrame({
+        "Fruit": ["Apples", "Oranges", "Bananas"],
+        "Amount": [10, 15, 7]
+    })
+
+    # Create a Plotly figure
+    fig = px.bar(df, x="Fruit", y="Amount", title="Fruit Amounts")
+
+    # Convert the figure to HTML
+    graph_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
+
+    return render(request, 'home/charts.html', {'graph_html': graph_html})

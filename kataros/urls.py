@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('welcome.urls')),
     path('home/', include('home.urls')),
-    path('home/charts/', include('home_plotly.urls')),
+    path('charts/', include('home_plotly.urls')),
     path('maps/', include('map_page.urls')),
 ]

@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.home_plotly, name='home_plotly'),
+    path('', views.chart_view, name='home_plotly'),
 ]
