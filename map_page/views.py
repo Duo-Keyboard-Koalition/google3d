@@ -3,12 +3,22 @@ from django.conf import settings
 
 def map_view(request):
     print(request.body)
+    # Get parameters from the request, with default values
+    lat = request.GET.get('lat', '37.841157')
+    lng = request.GET.get('lng', '-122.551679')
+    altitude = request.GET.get('altitude', '0')
+    heading = request.GET.get('heading', '330')
+    tilt = request.GET.get('tilt', '75')
+    range_value = request.GET.get('range', '2000')
+
     context = {
-        'center': '37.841157,-122.551679',  # Example coordinates
-        'range': 2000,
-        'tilt': 75,
-        'heading': 330,
-        'my_location': True,  # Default to False
+        'lat': lat,
+        'lng': lng,
+        'altitude': altitude,
+        'heading': heading,
+        'tilt': tilt,
+        'range': range_value,
+        'my_location': "true",  # You can make this dynamic if needed
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         'aria_label': 'Kataros Map',
     }

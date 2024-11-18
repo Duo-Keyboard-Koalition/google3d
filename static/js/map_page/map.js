@@ -1,20 +1,44 @@
 let map;
 
-function initMap() {
-  console.log("Google Maps API loaded");
-  map = $("gmp-map-3d").get(0); // Use jQuery to select the gmp-map-3d element
+async function init(
+  lat = 0,
+  lng = 0,
+  alt = 0,
+  heading = 0,
+  tilt = 0,
+  range = 0,
+  my_location = false
+) {
+  const { Map3DElement, Marker3DElement } = await google.maps.importLibrary(
+    "maps3d"
+  );
 
-  if (map) {
-    // Add event listeners using jQuery
-    $(map).on("gmp-click", handleMapClick);
-    $(map).on("gmp-centerchange", handleCenterChange);
-    $(map).on("gmp-headingchange", handleHeadingChange);
-    $(map).on("gmp-rangechange", handleRangeChange);
-    $(map).on("gmp-rollchange", handleRollChange);
-    $(map).on("gmp-steadychange", handleSteadyChange);
-    $(map).on("gmp-tiltchange", handleTiltChange);
-  } else {
-    console.error("Map element not found");
+  const mapContainer = document.getElementById("map-container");
+  map = new Map3DElement({
+    center: { lat: lat, lng: lng, altitude: alt },
+    heading: heading,
+    tilt: tilt,
+    range: range,
+  });
+
+  const marker = new Marker3DElement({
+    position: { lat: 48.861, lng: 2.335861 },
+  });
+
+  map.append(marker);
+
+  mapContainer.appendChild(map);
+  console.log("Google Maps API loaded");
+
+  // Add event listeners using jQuery
+  map.addEventListener("gmp-click", (event) => {
+    console.log(event.position);
+    // Do something with event.position.
+    appendMarker(event.position.lat, event.position.lng, map);
+  });
+
+  if (my_location === 1 || my_location === true) {
+    myLocation();
   }
 }
 
@@ -26,22 +50,10 @@ function adjustMapHeight() {
 }
 
 function handleMapClick(event) {
-
-  const lat = event.detail.latLng.lat;
-  const lng = event.detail.latLng.lng;
-  console.log(`Clicked at: ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
-
-  // Remove existing marker if any
-  if (marker) {
-    marker.remove();
-  }
-
-  // Create and add new marker
-  marker = new google.maps.marker.AdvancedMarkerElement({
-    position: { lat: lat, lng: lng },
-    map: map,
-    title: 'Clicked Location'
-  });
+  console.log("Event triggered: gmp-click");
+  // print the event object to the console
+  console.log(event);
+  console.log(event.position);
 }
 function handleCenterChange(event) {
   console.log("Event triggered: gmp-centerchange");
@@ -89,52 +101,19 @@ $(window).on("load", function () {
 });
 
 $(window).on("resize", adjustMapHeight);
-    async function init() {
-      const { Map3DElement, Marker3DElement } = await google.maps.importLibrary("maps3d");
+async function appendMarker(lat = 0, lng = 0, map) {
+  const { Map3DElement, Marker3DElement } = await google.maps.importLibrary(
+    "maps3d"
+  );
 
-      const marker = new Marker3DElement({
-        position: { lat: 48.861000, lng: 2.335861 }
-      });
+  const marker = new Marker3DElement({
+    position: { lat: lat, lng: lng },
+  });
 
-      map = $("gmp-map-3d").get(0); // Use jQuery to select the gmp-map-3d element
-
-      $(map).append(marker);
-    }
-
-
-function updateMapLocation(location){
-    // the location woud be in the form of natural language
-
+  map.append(marker);
+  // the marker would have an on cli
 }
 
-function myLocation() {
-    console.log("Google Maps API loaded");
-      map = $("gmp-map-3d").get(0); // Use jQuery to select the gmp-map-3d element
-    
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-    
-            // Set the map center to the user's location
-            const userCenter = `${userLat},${userLng}`;
-            $(map).attr("center", userCenter); // Update center attribute
-            // set the tilt of the container to 0
-            $(map).attr("tilt", 0);
-            // set the heading of the container to 0
-            $(map).attr("heading", 0);
-            // set the range of the container to 1000
-            $(map).attr("range", 1000);
-            console.log(`User's Location: ${userLat}, ${userLng}`);
-          },
-          () => {
-            console.error("Unable to retrieve your location.");
-            // Handle error case here, e.g., set a default location
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-        // Handle browsers that do not support geolocation
-      }
-    }
+function updateMapLocation(location) {
+  // the location woud be in the form of natural language
+}
