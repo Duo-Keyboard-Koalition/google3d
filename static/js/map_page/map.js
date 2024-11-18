@@ -10,7 +10,6 @@ async function init(
   my_location = false,
   showLabels = false
 ) {
-   console.log("Google Maps API loaded");
    console.log("Showing map with the following parameters:");
     console.log("Latitude:", lat);
     console.log("Longitude:", lng);
@@ -42,7 +41,6 @@ async function init(
   map.append(marker);
 
   mapContainer.appendChild(map);
-  console.log("Google Maps API loaded");
 
   // Add event listeners using jQuery
   map.addEventListener("gmp-click", (event) => {

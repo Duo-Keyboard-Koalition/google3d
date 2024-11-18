@@ -13,10 +13,13 @@
             </div>
         </div>
     </li>
-    <li class="nav-item mb-3">
-        <button id="myLocationButton" class="btn btn-primary w-100 d-flex align-items-center" type="button">
-            <i class="bi bi-geo-alt me-2"></i>
-            <span>My Location</span>
+    <li class="nav-item mb-2">
+        <button id="myLocationButton" class="btn btn-primary w-100 d-flex align-items-center justify-content-center" type="button">
+            <span class="button-content">
+                <i class="bi bi-geo-alt me-2"></i>
+                <span>My Location</span>
+            </span>
+            <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
         </button>
     </li>
     <li class="nav-item mb-3 d-flex justify-content-center">
@@ -51,7 +54,8 @@
     });
 </script>
 <script type="text/javascript">
-
+    console.log("{{ lat }}");
+    console.log("{{ lng }}");
     init({{ lat }}, {{ lng  }}, {{ altitude }}, {{ heading }}, {{ tilt }}, {{ range }}, {{my_location}}, {{showLabels}});
 
 </script>
@@ -77,5 +81,4 @@ $(document).ready(function() {
     });
 });
 </script>
-
 {% endblock %}

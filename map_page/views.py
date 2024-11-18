@@ -6,9 +6,9 @@ def map_view(request):
     # Get parameters from the request, with default values
     lat = request.GET.get('lat', '37.841157')
     lng = request.GET.get('lng', '-122.551679')
-    altitude = request.GET.get('altitude', '0')
-    heading = request.GET.get('heading', '330')
-    tilt = request.GET.get('tilt', '75')
+    altitude = request.GET.get('altitude', '1000')
+    heading = request.GET.get('heading', '0')
+    tilt = request.GET.get('tilt', '0')
     range_value = request.GET.get('range', '2000')
     showLabels = request.GET.get('showLabels', 'true')
     print("showLabels: ", showLabels)
@@ -19,7 +19,7 @@ def map_view(request):
         'heading': heading,
         'tilt': tilt,
         'range': range_value,
-        'my_location': "true",  # You can make this dynamic if needed
+        'my_location': "false",  # You can make this dynamic if needed
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         'aria_label': 'Kataros Map',
         'showLabels': showLabels,
