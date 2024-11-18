@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'charts',
-    'about_us',
-    'socials',
+    'map_forms',
+    'socials_forms',
     'map_page'
 ]
 

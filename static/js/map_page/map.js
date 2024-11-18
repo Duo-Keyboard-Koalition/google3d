@@ -26,13 +26,23 @@ function adjustMapHeight() {
 }
 
 function handleMapClick(event) {
-  console.log(event.position);
-  console.log("Event triggered: gmp-click");
-  // print the event object to the console
-  console.log(event);
-  console.log(map);
-}
 
+  const lat = event.detail.latLng.lat;
+  const lng = event.detail.latLng.lng;
+  console.log(`Clicked at: ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+
+  // Remove existing marker if any
+  if (marker) {
+    marker.remove();
+  }
+
+  // Create and add new marker
+  marker = new google.maps.marker.AdvancedMarkerElement({
+    position: { lat: lat, lng: lng },
+    map: map,
+    title: 'Clicked Location'
+  });
+}
 function handleCenterChange(event) {
   console.log("Event triggered: gmp-centerchange");
   // print the event object to the console
@@ -79,6 +89,18 @@ $(window).on("load", function () {
 });
 
 $(window).on("resize", adjustMapHeight);
+    async function init() {
+      const { Map3DElement, Marker3DElement } = await google.maps.importLibrary("maps3d");
+
+      const marker = new Marker3DElement({
+        position: { lat: 48.861000, lng: 2.335861 }
+      });
+
+      map = $("gmp-map-3d").get(0); // Use jQuery to select the gmp-map-3d element
+
+      $(map).append(marker);
+    }
+
 
 function updateMapLocation(location){
     // the location woud be in the form of natural language
