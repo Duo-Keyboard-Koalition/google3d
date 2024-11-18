@@ -10,7 +10,8 @@ def map_view(request):
     heading = request.GET.get('heading', '330')
     tilt = request.GET.get('tilt', '75')
     range_value = request.GET.get('range', '2000')
-
+    showLabels = request.GET.get('showLabels', 'true')
+    print("showLabels: ", showLabels)
     context = {
         'lat': lat,
         'lng': lng,
@@ -21,5 +22,6 @@ def map_view(request):
         'my_location': "true",  # You can make this dynamic if needed
         'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
         'aria_label': 'Kataros Map',
+        'showLabels': showLabels,
     }
     return render(request, 'map_page/map_page.html', context)

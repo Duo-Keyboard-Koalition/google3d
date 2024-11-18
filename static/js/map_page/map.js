@@ -7,8 +7,21 @@ async function init(
   heading = 0,
   tilt = 0,
   range = 0,
-  my_location = false
+  my_location = false,
+  showLabels = false
 ) {
+   console.log("Google Maps API loaded");
+   console.log("Showing map with the following parameters:");
+    console.log("Latitude:", lat);
+    console.log("Longitude:", lng);
+    console.log("Altitude:", alt);
+    console.log("Heading:", heading);
+    console.log("Tilt:", tilt);
+    console.log("Range:", range);
+    console.log("Show Labels:", showLabels);
+    // defaultLabelsDisabled: !showLabels,
+    console.log("defaultLabelsDisabled:", !showLabels);
+    console.log("My Location:", my_location);
   const { Map3DElement, Marker3DElement } = await google.maps.importLibrary(
     "maps3d"
   );
@@ -19,6 +32,7 @@ async function init(
     heading: heading,
     tilt: tilt,
     range: range,
+    defaultLabelsDisabled: !showLabels,
   });
 
   const marker = new Marker3DElement({
@@ -136,4 +150,14 @@ async function appendMarker(lat = 0, lng = 0, map, options = {}) {
 }
 function updateMapLocation(location) {
   // the location woud be in the form of natural language
+}
+
+
+function getCurrentMapPosition() {
+    // use jquerry to get the map element
+    //map = $("gmp-map-3d").get(0);
+
+
+    //console.log('map:', map);
+    console.log('get current map position');
 }

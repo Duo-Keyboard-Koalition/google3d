@@ -15,23 +15,21 @@
     </li>
     <li class="nav-item mb-3">
         <button id="myLocationButton" class="btn btn-primary w-100 d-flex align-items-center" type="button">
-            <i class="bi bi-geo-alt me-2"></i> <!-- Changed icon to represent location -->
-            <span>My Location</span> <!-- Updated text to indicate functionality -->
+            <i class="bi bi-geo-alt me-2"></i>
+            <span>My Location</span>
         </button>
     </li>
-    <li class="nav-item">
-        <form id="locationForm" class="mt-3">
-            <div class="mb-3">
-                <label for="locationInput" class="form-label">Enter a location:</label>
-                <input type="text" class="form-control" id="locationInput" placeholder="e.g., New York, NY" required>
-            </div>
-            <button type="submit" class="btn btn-success w-100">
-                <i class="bi bi-search me-2"></i>Go to Location
-            </button>
-        </form>
+    <li class="nav-item mb-3">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="labelsToggle" checked>
+            <label class="form-check-label" for="labelsToggle">Show Labels</label>
+        </div>
+        <div class="container mt-5">
+    </div>
     </li>
 </ul>
 {% endblock %}
+
 
 
 
@@ -54,13 +52,30 @@
 </script>
 <script type="text/javascript">
 
-    init({{ lat }}, {{ lng  }}, {{ altitude }}, {{ heading }}, {{ tilt }}, {{ range }}, {{my_location}});
+    init({{ lat }}, {{ lng  }}, {{ altitude }}, {{ heading }}, {{ tilt }}, {{ range }}, {{my_location}}, {{showLabels}});
 
 </script>
+
+<!-- Custom JavaScript -->
 <script>
+$(document).ready(function() {
+    const $labelsToggle = $('#labelsToggle');
 
+
+    $labelsToggle.on('change', function() {
+        console.log($labelsToggle);
+        const $map = $("gmp-map-3d").first();
+        console.log($map[0]);
+
+        if (this.checked) {
+            console.log('Toggle switch is ON');
+            $map.removeAttr('default-labels-disabled');
+        } else {
+            console.log('Toggle switch is OFF');
+            $map.attr('default-labels-disabled', '');
+        }
+    });
+});
 </script>
-
-
 
 {% endblock %}
