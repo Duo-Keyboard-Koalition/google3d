@@ -101,19 +101,39 @@ $(window).on("load", function () {
 });
 
 $(window).on("resize", adjustMapHeight);
-async function appendMarker(lat = 0, lng = 0, map) {
-  const { Map3DElement, Marker3DElement } = await google.maps.importLibrary(
-    "maps3d"
-  );
+async function appendMarker(lat = 0, lng = 0, map, options = {}) {
+  try {
+    const { Map3DElement, Marker3DInteractiveElement } = await google.maps.importLibrary("maps3d");
 
-  const marker = new Marker3DElement({
-    position: { lat: lat, lng: lng },
-  });
+    if (!map) {
+      console.warn("No map provided, creating a new Map3DElement");
+      map = new Map3DElement({
+        center: { lat, lng },
+        zoom: 10
+      });
+      document.body.appendChild(map);
+    }
 
-  map.append(marker);
-  // the marker would have an on cli
+    const markerOptions = {
+      position: { lat, lng },
+      ...options
+    };
+
+    const marker = new Marker3DInteractiveElement(markerOptions);
+
+    map.append(marker);
+
+    marker.addEventListener("gmp-click", () => {
+      console.log("Marker clicked");
+      marker.remove();
+    });
+
+    return marker;
+  } catch (error) {
+    console.error("Error creating marker:", error);
+    return null;
+  }
 }
-
 function updateMapLocation(location) {
   // the location woud be in the form of natural language
 }
