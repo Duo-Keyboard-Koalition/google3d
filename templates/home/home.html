@@ -19,35 +19,8 @@
                     </button>
                     <div id="loadingMessage" class="mt-3 d-none">
                         <div class="globe-loader" role="status">
-                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                              <circle class="globe" cx="50" cy="50" r="40" />
-                              <path class="meridian" d="M 50 10 A 40 40 0 0 1 50 90 A 40 40 0 0 1 50 10" />
-                            </svg>
-                            <p>a man a plan a canal panama</p>
-                          </div>
-                          
-                          <style>
-                          .globe-loader svg {
-                            width: 50px;
-                            height: 50px;
-                          }
-                          .globe {
-                            fill: none;
-                            stroke: #007bff;
-                            stroke-width: 4;
-                          }
-                          .meridian {
-                            fill: none;
-                            stroke: #007bff;
-                            stroke-width: 2;
-                            animation: rotate 3s linear infinite;
-                          }
-                          @keyframes rotate {
-                            0% { transform: rotateY(0deg); }
-                            100% { transform: rotateY(360deg); }
-                          }
-                          </style>
-                        <p class="mt-2">Hang in There we are Bootstrapping your adventure</p>
+                            <p id="loadingQuote" class="mt-2 text-muted">Bootstrapping your adventure...</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,4 +147,90 @@ function redirectToMapWithLocation() {
     }
 }
 </script>
+<script>
+    // Array of lighthearted digital nomad-themed quotes
+    const loadingQuotes = [
+        "Packing virtual bags...",
+        "Charging laptop batteries worldwide...",
+        "Connecting to global WiFi...",
+        "Plotting course on digital map...",
+        "Brewing coffee in a new timezone...",
+        "Syncing wanderlust...",
+        "Downloading adventure...",
+        "Calculating passport stamps...",
+        "Optimizing work-life balance...",
+        "Rendering dream destinations...",
+        "Uploading nomadic spirit...",
+        "Triangulating freedom coordinates...",
+        "Compiling travel memories...",
+        "Generating wanderlust algorithm...",
+        "Mapping out next destination..."
+    ];
+
+    function updateLoadingQuote() {
+        const quoteElement = document.getElementById('loadingQuote');
+        if (quoteElement) {
+            const randomQuote = loadingQuotes[Math.floor(Math.random() * loadingQuotes.length)];
+            quoteElement.textContent = randomQuote;
+        }
+    }
+
+    // Modify the existing redirectToMapWithLocation function to update the quote
+    function redirectToMapWithLocation() {
+        // Update quote when loading starts
+        updateLoadingQuote();
+
+        console.log("redirectToMapWithLocation");
+        if (selectedPlace && selectedPlace.geometry && selectedPlace.geometry.location) {
+            const lat = selectedPlace.geometry.location.lat();
+            const lon = selectedPlace.geometry.location.lng();
+            const mapUrl = `{% url 'maps' %}?lat=${lat}&lng=${lon}`;
+            window.location.href = mapUrl;
+        } else if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapUrl = `{% url 'maps' %}?lat=${lat}&lng=${lon}`;
+                    window.location.href = mapUrl;
+                },
+                function(error) {
+                    console.error("Error getting location:", error);
+                    window.location.href = "{% url 'maps' %}";
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+            window.location.href = "{% url 'maps' %}";
+        }
+    }
+
+    // Optional: Update quote periodically while loading
+    $(document).ready(function() {
+        $('#viewMapButton').on('click', function() {
+            $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+            $('#loadingMessage').removeClass('d-none');
+            
+            // Start periodic quote updates
+            const quoteInterval = setInterval(updateLoadingQuote, 2000);
+            
+            // Stop interval when navigation occurs
+            window.addEventListener('beforeunload', () => {
+                clearInterval(quoteInterval);
+            });
+        });
+    });
+</script>
+
+<style>
+    #loadingQuote {
+        font-style: italic;
+        animation: fadeInOut 2s ease-in-out infinite;
+    }
+
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+</style>
 {% endblock %}
