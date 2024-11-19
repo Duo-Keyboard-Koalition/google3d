@@ -5,4 +5,5 @@ def login(request):
     return render(request, 'login.html')
 @login_required
 def home(request):
+    print(request.user)
     return render(request, 'home.html')
