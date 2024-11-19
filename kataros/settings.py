@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
+from django.conf.global_settings import AUTHENTICATION_BACKENDS
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -46,13 +48,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
+    'mainApp',
     'home',
+    'map_page',
+    'socios',
     'charts',
-    'map_forms',
-    'socials_forms',
-    'map_page'
 ]
-
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -61,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'kataros.urls'
@@ -76,11 +83,26 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
             ],
         },
     },
 ]
+client_secrets = {
+  "web": {
+    "client_id": "1058517925623-5soi3lafqfu6h5gkvj1ur5klh7l9fbvf.apps.googleusercontent.com",
+    "project_id": "launchpad-online-378222",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "javascript_origins": ["http://localhost:8000"]
+  }
+}
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = client_secrets['web']['client_id']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = client_secrets['web']['client_secret']
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8000/complete/google-oauth2/'
 WSGI_APPLICATION = 'kataros.wsgi.application'
 
 
