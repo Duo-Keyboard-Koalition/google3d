@@ -1,12 +1,53 @@
-{% extends 'base.html' %} 
-{% block title %}Sign in{% endblock %} 
-{% block content %} 
-    <div class="row">
-        <div class="col-md-8 mx-auto social-container my-2 order-md-1">
-            <button>
-                <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login With Google</a>
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Login to Kataros</h2>
+                    <!-- Login Button -->
+                    <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}"
+                       class="btn btn-primary btn-lg mb-3" id="google-login-btn">
+                        <i class="bi bi-google me-2"></i>Login with Google
+                    </a>
 
-            </button>
+                    <!-- Change Account Button -->
+                    <button id="changeAccountButton" class="btn btn-secondary btn-lg" onclick="changeAccount()">
+                        Change Account
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+function changeAccount() {
+    // Clear Google authentication and redirect to login
+    clearGoogleAuth();
+    // Redirect to Google login with prompt to select account
+    window.location.href = "{% url 'social:begin' 'google-oauth2' %}?prompt=select_account";
+}
+
+function clearGoogleAuth() {
+    // Attempt to sign out from Google
+    if (gapi && gapi.auth2) {
+        var auth2 = gapi.auth2.getAuthInstance();
+        if (auth2) {
+            auth2.signOut().then(function () {
+                auth2.disconnect();
+            });
+        }
+    }
+
+    // Clear local storage and cookies
+    localStorage.clear();
+    document.cookie.split(";").forEach(function(c) {
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+}
+</script>
 {% endblock %}

@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # join paths with os
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -49,11 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'mainApp',
+    'profile',
     'home',
     'map_page',
-    'socios',
-    'charts',
 ]
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
@@ -103,9 +104,34 @@ client_secrets = {
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = client_secrets['web']['client_id']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = client_secrets['web']['client_secret']
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8000/complete/google-oauth2/'
+
+# settings.py
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'prompt': 'consent'  # Force account selection
+}
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email',
+]
+# Ensure these are set
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'  # Redirect to home after login
+LOGOUT_REDIRECT_URL = 'home'  # Redirect to login after logout
+
 WSGI_APPLICATION = 'kataros.wsgi.application'
 
-
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'home.pipeline.create_user',  # Add this line
+)
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
